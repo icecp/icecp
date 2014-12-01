@@ -1,0 +1,5 @@
+com.intel.icecp.node.security.crypto.mac.hmac.HmacSha1Scheme
+com.intel.icecp.node.security.crypto.mac.hmac.HmacSha224Scheme
+com.intel.icecp.node.security.crypto.mac.hmac.HmacSha256Scheme
+com.intel.icecp.node.security.crypto.mac.hmac.HmacSha384Scheme
+com.intel.icecp.node.security.crypto.mac.hmac.HmacSha512Scheme

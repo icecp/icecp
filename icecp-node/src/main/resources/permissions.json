@@ -1,0 +1,40 @@
+{
+	"name": "featurePermissions",
+	"grants": [
+		{
+			"permission": "com.intel.icecp.core.permissions.ChannelPermission",
+			"target": "rustic-features-0.1.1.jar",
+			"action": "subscribe"
+		},
+		{
+			"permission": "com.intel.icecp.core.permissions.ChannelPermission",
+			"target": "ndn:/intel/node/dataProxy/configuration",
+			"action": "subscribe"
+		},
+		{
+			"permission": "java.util.PropertyPermission",
+			"target": "*",
+			"action": "read,write"
+		},
+		{
+			"permission": "java.lang.RuntimePermission",
+			"target": "getClassLoader",
+			"action": ""
+		},
+		{
+			"permission": "com.intel.icecp.core.permissions.ChannelPermission",
+			"target": "ndn:/test/device/FeatureSample",
+			"action": "publish"
+		},
+		{
+			"permission": "com.intel.icecp.core.permissions.DevicePermission",
+			"target": "*",
+			"action": "network,read,write"
+		},
+		{
+			"permission": "java.io.FilePermission",
+			"target": ".",
+			"action": "read"
+		}
+	]
+}

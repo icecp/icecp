@@ -1,0 +1,24 @@
+{
+    "name": "featurePermissions",
+    "grants": [
+        { 
+            "permission": "com.intel.icecp.core.permissions.ChannelPermission2", 
+            "target": "ndn:/intel/node", 
+            "action": "subscribe,publish" 
+        },
+        {
+            "permission": "com.intel.icecp.core.permissions.ChannelPermission",
+            "target": "rustic-features-0.1.1.jar",
+            "action": "subscribe,foo"
+        },
+        {
+        	"permission": "com.intel.icecp.core.permissions.ChannelPermission",
+        	"target": "ndn:/intel/node/dataProxy/configuration",
+        	"action": ""
+        },
+        {
+        	"permission": "java.util.PropertyPermission",
+        	"target": "*"
+        }   
+    ]
+}

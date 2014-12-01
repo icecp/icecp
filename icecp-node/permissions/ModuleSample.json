@@ -1,0 +1,75 @@
+{
+    "name": "ModuleSamplePermissions",
+    "grants": [
+        {
+            "permission": "com.intel.icecp.core.permissions.ModulePermission",
+            "target": "*",
+            "action": "start,stop"
+        },
+        {
+        	"permission": "java.util.PropertyPermission",
+        	"target": "*",
+        	"action": "read,write"
+        },
+		{
+            "permission": "java.io.FilePermission",
+            "target": "ModuleSample_status.txt",
+            "action": "read,write,delete"
+		},
+		{
+            "permission": "com.intel.icecp.core.permissions.ChannelPermission",
+            "target": "ndn:/test/moduleMgr",
+            "action": "publish,subscribe,close,open"
+        },
+		{
+            "permission": "com.intel.icecp.core.permissions.ChannelPermission",
+            "target": "ndn:/intel/node/ModuleSampleChannel",
+            "action": "publish,subscribe,close,open"
+        },
+		{
+            "permission": "com.intel.icecp.core.permissions.ChannelPermission",
+            "target": "ndn:/intel/node/TCOPPERN-MOBL/ModuleSampleChannel",
+            "action": "publish,subscribe,close,open"
+        },
+        {
+            "permission": "com.intel.icecp.core.permissions.ChannelPermission",
+            "target": "ndn:/intel/events/channel",
+            "action": "publish"
+        },
+		{
+            "permission": "java.io.FilePermission",
+            "target": ".",
+            "action": "read"
+		},
+		{
+            "permission": "java.io.FilePermission",
+            "target": "C:/Users/tcoppern/.ndn/ndnsec-tpm-file/-",
+            "action": "read"
+		},
+        {
+        	"permission": "java.lang.RuntimePermission",
+        	"target": "accessDeclaredMembers",
+        	"action": ""
+        },
+        {
+        	"permission": "java.lang.RuntimePermission",
+        	"target": "getClassLoader",
+        	"action": ""
+        },
+        {
+        	"permission": "java.lang.RuntimePermission",
+        	"target": "setContextClassLoader",
+        	"action": ""
+        },
+        {
+        	"permission": "java.net.NetPermission",
+        	"target": "specifyStreamHandler",
+        	"action": ""
+        },
+        {
+        	"permission": "java.io.FilePermission",
+        	"target": "MyNewPomFile.xml",
+        	"action": "read,write,delete"
+        }
+    ]
+}

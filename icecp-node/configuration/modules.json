@@ -1,0 +1,4 @@
+{
+	"dependencyChannels": ["file:~/.m2/repository", "ndn:/intel/node/IcecpLocator"],
+	"retrieveUnderMs": 60000
+}

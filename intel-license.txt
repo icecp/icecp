@@ -1,0 +1,13 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}File name: ${name}.java
+${licensePrefix}
+${licensePrefix}Purpose: 
+${licensePrefix}
+${licensePrefix}© Copyright Intel Corporation. All rights reserved.
+${licensePrefix}Intel Corporation, 2200 Mission College Boulevard,
+${licensePrefix}Santa Clara, CA 95052-8119, USA
+<#if licenseLast??>
+${licenseLast}
+</#if>
