@@ -1,0 +1,37 @@
+{
+	"name": "/test/node",
+	"list": ["a", "b", "c"],
+	"forwarder": {
+		"uri": "localhost"
+	},
+	"features": {
+		"mesh": {
+			"prefix": "/intel",
+			"protocol": "tcp4",
+			"nodes": [
+				{
+					"prefix": "/intel/manager",
+					"uri": "ndn-server1.amr.corp.intel.com"
+				}
+			]
+		},
+		"registration": {
+			"channel": "/intel/registration",
+			"lifetime": 30000
+		},
+		"httpProxy": {
+			"proxy": {
+				"host": "proxy-chain.intel.com",
+				"port": 911
+			},
+			"auth": {
+				"username": null,
+				"password": null
+			}
+		},
+		"configurationServer": {
+			"uri": "ndn-server1.amr.corp.intel.com",
+			"prefix": "/intel/manager/configuration"
+		}
+	}
+}

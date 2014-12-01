@@ -1,0 +1,19 @@
+{
+	"name": "/intel/node/1234",
+	"version": 0.6,
+	"features": ["node-info", "http-proxy", "sensor"],
+	"networks": {
+		"ndn": {
+			"uri": "tcp4://andrew-dev.jf.intel.com",
+			"connected": ["tcp4://ndn-lab2.jf.intel.com", "udp4://10.23.45.67"]
+		},
+		"dds": {
+			"uri": "dds://1234",
+			"connected": ["dds://5678", "dds://0987"]
+		}
+	},
+	"channels": {
+		"publishing": ["ndn:/intel/node/1234", "ndn:/intel/node/1234/some-data", "ndn:/intel/sensor/a1s2d3", "dds:/intel/sensor/a1s2d3"],
+		"subscribing": ["ndn:/intel/events", "dds:/intel/sensor/a1s2d3"]
+	}
+}

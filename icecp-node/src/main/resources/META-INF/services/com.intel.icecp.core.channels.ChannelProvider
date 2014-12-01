@@ -1,0 +1,2 @@
+com.intel.icecp.node.channels.file.FileChannelProvider
+com.intel.icecp.node.channels.ndn.NdnChannelProvider

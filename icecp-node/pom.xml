@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.intel.icecp</groupId>
+        <artifactId>icecp</artifactId>
+        <version>0.13.0</version>
+    </parent>
+
+    <name>icecp-node</name>
+    <groupId>com.intel.icecp</groupId>
+    <artifactId>icecp-node</artifactId>
+    <version>0.13.0</version>
+    <packaging>jar</packaging>
+    <description>Includes the core API and the reference implementation for an Information-Centric Edge Compute Platform (ICECP) Node</description>
+
+    <properties>
+        <!-- overwrite default value inherited from icecp-module-template -->
+        <rpm.targetDirectory>/home/icecp/${project.version}-${rpm.release}</rpm.targetDirectory>
+    </properties>
+
+    <build>
+        <plugins>
+            <!-- control logging output during tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
+                <configuration>
+                    <systemProperties>
+                        <property>
+                            <name>log4j.configurationFile</name>
+                            <value>configuration/log4j2.xml</value>
+                        </property>
+                        <property>
+                            <name>java.util.logging.config.file</name>
+                            <value>configuration/logging.properties</value>
+                        </property>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.18.1</version>
+                <executions>
+                    <execution>
+                        <id>runIntegrationTests</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>verifyIntegrationTests</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <systemProperties>
+                        <property>
+                            <name>log4j.configurationFile</name>
+                            <value>configuration/log4j2.xml</value>
+                        </property>
+                        <property>
+                            <name>java.util.logging.config.file</name>
+                            <value>configuration/logging.properties</value>
+                        </property>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+            <!-- set the MainClass property in the JAR manifest -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>.</classpathPrefix>
+                            <mainClass>com.intel.icecp.main.MainDaemon</mainClass>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                        log4j.configurationFile
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.9</version>
+                <executions>
+                    <execution>
+                        <id>download-licenses</id>
+                        <goals>
+                            <goal>download-licenses</goal>
+                        </goals>
+                        <configuration>
+                            <licensesOutputDirectory>${project.build.directory}/generated-resources/licenses-icecp-node
+                            </licensesOutputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- main dependencies to run -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.intel.icecp</groupId>
+            <artifactId>icecp-rpc</artifactId>
+            <version>[0.2.0, 0.3.0)</version>
+        </dependency>
+        <dependency>
+            <groupId>com.intel.icecp</groupId>
+            <artifactId>icecp-core</artifactId>
+            <version>0.13.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.intel.icecp</groupId>
+            <artifactId>icecp-mock</artifactId>
+            <version>0.13.0</version>
+        </dependency>
+
+        <!-- format-specific dependencies; TODO these should be SPI-loaded -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-cbor</artifactId>
+            <version>2.6.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.6.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-jsonSchema</artifactId>
+            <version>2.6.4</version>
+        </dependency>
+
+        <!-- Log4j-core specific dependency -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+
+        <!-- NDN-specific dependencies; TODO these should be SPI-loaded -->
+        <dependency>
+            <groupId>com.intel.jndn.utils</groupId>
+            <artifactId>jndn-utils</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.intel.jndn.management</groupId>
+            <artifactId>jndn-management</artifactId>
+            <version>1.1.3</version>
+        </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>com.intel.jndn.mock</groupId>
+            <artifactId>jndn-mock</artifactId>
+            <version>1.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>2.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-model</artifactId>
+            <version>3.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <!-- Run `mvn package -Pas-application` to build project as a runnable application; look for output in
+        'target/appassembler' -->
+        <profile>
+            <id>as-application</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>appassembler-maven-plugin</artifactId>
+                        <version>1.10</version>
+                        <executions>
+                            <execution>
+                                <id>create-runnable-application</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>assemble</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <programs>
+                                <program>
+                                    <mainClass>com.intel.icecp.main.MainDaemon</mainClass>
+                                    <id>icecp</id>
+                                </program>
+                            </programs>
+                            <repositoryName>lib</repositoryName>
+                            <repositoryLayout>flat</repositoryLayout>
+                            <configurationDirectory>configuration</configurationDirectory>
+                            <configurationSourceDirectory>configuration</configurationSourceDirectory>
+                            <copyConfigurationDirectory>true</copyConfigurationDirectory>
+                            <extraJvmArguments>-Ddeap.configuration=@BASEDIR@/configuration
+                                -Djava.util.logging.config.file=@BASEDIR@/configuration/logging.properties
+                            </extraJvmArguments>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <id>copy-permissions</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <target name="copy permissions to appassembly">
+                                <copy todir="${project.build.directory}/appassembler/permissions">
+                                    <fileset dir="permissions"/>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Run `mvn package -Pas-rpm` to build project and package it as an RPM; look for output the project directory -->
+        <profile>
+            <id>as-rpm</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>appassembler-maven-plugin</artifactId>
+                        <version>1.10</version>
+                        <executions>
+                            <execution>
+                                <id>create-runnable-application</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>assemble</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <programs>
+                                <program>
+                                    <mainClass>com.intel.icecp.main.MainDaemon</mainClass>
+                                    <id>icecp</id>
+                                </program>
+                            </programs>
+                            <repositoryName>lib</repositoryName>
+                            <repositoryLayout>flat</repositoryLayout>
+                            <configurationDirectory>configuration</configurationDirectory>
+                            <configurationSourceDirectory>configuration</configurationSourceDirectory>
+                            <copyConfigurationDirectory>true</copyConfigurationDirectory>
+                            <extraJvmArguments>-Dicecp.configuration=@BASEDIR@/configuration
+                                -Djava.util.logging.config.file=@BASEDIR@/configuration/logging.properties
+                            </extraJvmArguments>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <id>copy-permissions</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <target name="copy permissions to appassembly">
+                                <copy todir="${project.build.directory}/appassembler/permissions">
+                                    <fileset dir="permissions"/>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.5.0</version>
+                        <executions>
+                            <execution>
+                                <id>create-rpm</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <!-- see explanations at https://github.com/jordansissel/fpm/wiki#usage -->
+                            <executable>fpm</executable>
+                            <commandlineArgs>-s dir -t rpm -f
+                                --template-scripts
+                                --license &quot;Intel Proprietary (see 'licenses' directory for libraries)&quot;
+                                --before-install ${project.basedir}/packaging/scripts/before-install.sh
+                                --after-install ${project.basedir}/packaging/scripts/after-install.sh
+                                --before-remove ${project.basedir}/packaging/scripts/before-remove.sh
+                                --after-remove ${project.basedir}/packaging/scripts/after-remove.sh
+                                --name ${project.artifactId}
+                                --version ${project.version}
+                                --iteration ${rpm.release}
+                                --architecture all
+                                --vendor &quot;${rpm.vendor}&quot;
+                                --maintainer &quot;${rpm.maintainer}&quot;
+                                --description &quot;${project.description}&quot;
+                                --url &quot;${rpm.url}&quot;
+                                --rpm-digest &quot;${rpm.digest}&quot;
+                                --rpm-auto-add-directories
+                                --config-files ${rpm.targetDirectory}/configuration
+                                ${project.build.directory}/appassembler/bin=${rpm.targetDirectory}
+                                ${project.build.directory}/appassembler/lib=${rpm.targetDirectory}
+                                ${project.build.directory}/appassembler/configuration=${rpm.targetDirectory}
+                                ${project.build.directory}/appassembler/permissions=${rpm.targetDirectory}
+                                ${project.basedir}/packaging/etc=/
+                                ${basedir}/target/generated-resources/licenses-icecp-node=${rpm.targetDirectory}/licenses/
+                                ${basedir}/target/generated-resources/licenses.xml=${rpm.targetDirectory}/licenses/licenses-icecp-node/licenses.xml
+                                ${basedir}/../icecp-mock/target/generated-resources/licenses-icecp-mock=${rpm.targetDirectory}/licenses/
+                                ${basedir}/../icecp-mock/target/generated-resources/licenses.xml=${rpm.targetDirectory}/licenses/licenses-icecp-mock/licenses.xml
+                                ${basedir}/../icecp-core/target/generated-resources/licenses-icecp-core=${rpm.targetDirectory}/licenses/
+                                ${basedir}/../icecp-core/target/generated-resources/licenses.xml=${rpm.targetDirectory}/licenses/licenses-icecp-core/licenses.xml
+                            </commandlineArgs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Run with `mvn package -Pwith-dependencies` to build JAR containing all dependencies; this is deprecated
+        and will be removed soon -->
+        <profile>
+            <id>with-dependencies</id>
+            <build>
+                <plugins>
+                    <!-- build a JAR with dependencies -->
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <archive>
+                                <manifest>
+                                    <mainClass>com.intel.icecp.main.MainDaemon</mainClass>
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                    <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
