@@ -39,12 +39,11 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
-//import com.intel.rustic_canyon.impl.features.MavenProject;
 public class MavenProjectTest {
 
     @Test
     public void testParseFromManifest() {
-        //groupId:artifictId:packaging:classifier:version 
+        //groupId:artifactId:packaging:classifier:version 
         String testProject = "GroupId:ArtifactId:jar::0.1";
         InputStream in = new ByteArrayInputStream(testProject.getBytes());
         MavenProject mp = MavenProject.parseFromManifest(in);

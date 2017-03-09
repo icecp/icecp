@@ -1,7 +1,7 @@
 {
 	"name": "/intel/node/1234",
 	"version": 0.6,
-	"features": ["node-info", "http-proxy", "middlepeak"],
+	"features": ["node-info", "http-proxy", "sensor"],
 	"networks": {
 		"ndn": {
 			"uri": "tcp4://andrew-dev.jf.intel.com",
@@ -13,7 +13,7 @@
 		}
 	},
 	"channels": {
-		"publishing": ["ndn:/intel/node/1234", "ndn:/intel/node/1234/some-data", "ndn:/intel/middlepeak/a1s2d3", "dds:/intel/middlepeak/a1s2d3"],
-		"subscribing": ["ndn:/intel/events", "dds:/intel/middlepeak/a1s2d3"]
+		"publishing": ["ndn:/intel/node/1234", "ndn:/intel/node/1234/some-data", "ndn:/intel/sensor/a1s2d3", "dds:/intel/sensor/a1s2d3"],
+		"subscribing": ["ndn:/intel/events", "dds:/intel/sensor/a1s2d3"]
 	}
 }

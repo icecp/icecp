@@ -11,22 +11,22 @@
         	"target": "*",
         	"action": "read,write"
         },
-		{
+	{
             "permission": "java.io.FilePermission",
             "target": "ModuleSample_status.txt",
             "action": "read,write,delete"
-		},
-		{
+	},
+	{
             "permission": "com.intel.icecp.core.permissions.ChannelPermission",
             "target": "ndn:/test/moduleMgr",
             "action": "publish,subscribe,close,open"
         },
-		{
+	{
             "permission": "com.intel.icecp.core.permissions.ChannelPermission",
             "target": "ndn:/intel/node/ModuleSampleChannel",
             "action": "publish,subscribe,close,open"
         },
-		{
+	{
             "permission": "com.intel.icecp.core.permissions.ChannelPermission",
             "target": "ndn:/intel/node/TCOPPERN-MOBL/ModuleSampleChannel",
             "action": "publish,subscribe,close,open"
@@ -36,16 +36,16 @@
             "target": "ndn:/intel/events/channel",
             "action": "publish"
         },
-		{
+	{
             "permission": "java.io.FilePermission",
             "target": ".",
             "action": "read"
-		},
-		{
+	},
+	{
             "permission": "java.io.FilePermission",
-            "target": "C:/Users/tcoppern/.ndn/ndnsec-tpm-file/-",
+            "target": "~/.ndn/ndnsec-tpm-file/-",
             "action": "read"
-		},
+	},
         {
         	"permission": "java.lang.RuntimePermission",
         	"target": "accessDeclaredMembers",
