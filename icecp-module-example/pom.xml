@@ -29,12 +29,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>ubit-artifactory-or.intel.com</id>
-            <name>IT Artifactory (libs)</name>
-            <url>https://ubit-artifactory-or.intel.com/artifactory/ARP-EAP-maven-local</url>
-        </repository>
-    </repositories>
 </project>

@@ -26,14 +26,6 @@
         <scm.username>insert user name</scm.username>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>ubit-artifactory-or.intel.com</id>
-            <name>IT Artifactory (libs)</name>
-            <url>https://ubit-artifactory-or.intel.com/artifactory/ARP-EAP-maven-local</url>
-        </repository>
-    </repositories>
-
     <profiles>
         <!-- Run with `mvn package -Pwith-dependencies` to build JAR containing all dependencies; this is deprecated
         and will be removed soon -->
@@ -169,8 +161,7 @@
             </build>
         </profile>
 
-        <!-- Run `mvn clean package -Pfor-analysis` to send analyzed code to SonarQube; see also
-        https://github.intel.com/iSPA/deap-node/wiki/Setup-SonarQube -->
+        <!-- Run `mvn clean package -Pfor-analysis` to send analyzed code to SonarQube -->
         <profile>
             <id>for-analysis</id>
             <build>
