@@ -169,9 +169,9 @@ public class MavenProject {
      *
      * @param jarArtifact A maven artifact in this format
      * {@code <groupId>:<artifactId>:<extension>:[<classifier>:]<version>}
-     * Examples: example w/o classifier: com.rti.dds:ndds:jar::5.1.0 example w/o
-     * classifier: com.rti.dds:ndds:jar:5.1.0 example w classifier:
-     * com.rti.dds:ndds:jar:-debug:5.1.0
+     * Examples: example w/o classifier: com.example.group:artifact:jar::5.1.0 example w/o
+     * classifier: com.example.group:artifact:jar:5.1.0 example w classifier:
+     * com.example.group:artifact:jar:-debug:5.1.0
      *
      * @return MavenProject
      * @throws IllegalArgumentException
@@ -184,9 +184,9 @@ public class MavenProject {
         //expected format is:
         //<groupId>:<artifactId>:<extension>:[<classifier>:]<version>
         //possible examples:
-        //example w/o classifier: com.rti.dds:ndds:jar::5.1.0
-        //example w/o classifier: com.rti.dds:ndds:jar:5.1.0
-        //example w   classifier: com.rti.dds:ndds:jar:-debug:5.1.0
+        //example w/o classifier: com.example.group:artifact:jar::5.1.0
+        //example w/o classifier: com.example.group:artifact:jar:5.1.0
+        //example w   classifier: com.example.group:artifact:jar:-debug:5.1.0
         Pattern p = Pattern.compile("([^: ]+):([^: ]+):([^: ]+):(([^: ]*):)?([^: ]+)");
         Matcher m = p.matcher(jarArtifact);
         if (!m.matches()) {
