@@ -1,2 +1,0 @@
-V	160927232558Z		01	unknown	/C=US/ST=OR/O=Intel/OU=IoTG/CN=Moreno Ambrosin
-V	161004212348Z		02	unknown	/C=IE/ST=Co. Dublin/O=Progress/OU=Engineering/CN=Alice
