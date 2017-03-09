@@ -17,12 +17,12 @@ other factors.
 
 ### Installation and Use
 
- - [How to Install and Run](https://github.intel.com/iSPA/icecp-node/wiki/How-to-Install-and-Run)
+ - [How to Install and Run](https://github.com/icecp/icecp/wiki/How-to-Install-and-Run)
 
 ### Documentation
 
- - [Wiki](https://github.intel.com/iSPA/icecp-node/wiki)
- - [Javadoc](https://github.intel.com/pages/iSPA/icecp-node)
+ - [Wiki](https://github.com/icecp/icecp/wiki)
+ - [Javadoc](https://icecp.github.io/icecp)
 
 ### Structure
 
