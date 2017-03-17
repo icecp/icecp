@@ -194,6 +194,67 @@
     </dependencies>
 
     <profiles>
+        <!-- Run `mvn package -Pas-application` to build project as a runnable application; look for output in
+        'target/appassembler' -->
+        <profile>
+            <id>as-application</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>appassembler-maven-plugin</artifactId>
+                        <version>1.10</version>
+                        <executions>
+                            <execution>
+                                <id>create-runnable-application</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>assemble</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <programs>
+                                <program>
+                                    <mainClass>com.intel.icecp.main.MainDaemon</mainClass>
+                                    <id>icecp</id>
+                                </program>
+                            </programs>
+                            <repositoryName>lib</repositoryName>
+                            <repositoryLayout>flat</repositoryLayout>
+                            <configurationDirectory>configuration</configurationDirectory>
+                            <configurationSourceDirectory>configuration</configurationSourceDirectory>
+                            <copyConfigurationDirectory>true</copyConfigurationDirectory>
+                            <extraJvmArguments>-Ddeap.configuration=@BASEDIR@/configuration
+                                -Djava.util.logging.config.file=@BASEDIR@/configuration/logging.properties
+                            </extraJvmArguments>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <id>copy-permissions</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <target name="copy permissions to appassembly">
+                                <copy todir="${project.build.directory}/appassembler/permissions">
+                                    <fileset dir="permissions"/>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- Run `mvn package -Pas-rpm` to build project and package it as an RPM; look for output the project directory -->
         <profile>
             <id>as-rpm</id>
