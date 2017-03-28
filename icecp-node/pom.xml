@@ -14,8 +14,12 @@
     <artifactId>icecp-node</artifactId>
     <version>0.13.0</version>
     <packaging>jar</packaging>
-    <description>Includes the core API and the reference implementation for an Information-Centric Edge Compute Platform (ICECP) Node
-    </description>
+    <description>Includes the core API and the reference implementation for an Information-Centric Edge Compute Platform (ICECP) Node</description>
+
+    <properties>
+        <!-- overwrite default value inherited from icecp-module-template -->
+        <rpm.targetDirectory>/home/icecp/${project.version}-${rpm.release}</rpm.targetDirectory>
+    </properties>
 
     <build>
         <plugins>

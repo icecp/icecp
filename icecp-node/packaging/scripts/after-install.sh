@@ -15,17 +15,23 @@ after_install()
 
   chmod 644 $SYSCONFIGDIR/systemd/system/icecp.service
 
-  # Reload daemon to pick up new changes
-  systemctl daemon-reload
-  echo "Ran systemctl daemon-reload"
+  if [ $(cat /proc/1/comm) = "systemd" ]; then
+    echo "Found systemd; attempting to start icecp service"
 
-  # Enable the service
-  systemctl enable icecp
-  echo "Enabled icecp service"
+    # Reload daemon to pick up new changes
+    systemctl daemon-reload
+    echo "Ran systemctl daemon-reload"
 
-  # Enable the service
-  systemctl start icecp
-  echo "Started icecp service"
+    # Enable the service
+    systemctl enable icecp
+    echo "Enabled icecp service"
 
+    # Enable the service
+    systemctl start icecp
+    echo "Started icecp service"
+  else
+    echo "No systemd found; run icecp manually"
+  fi
 }
+
 after_install
