@@ -6,13 +6,13 @@
     <parent>
         <groupId>com.intel.icecp</groupId>
         <artifactId>icecp</artifactId>
-        <version>0.12.12</version>
+        <version>0.13.0</version>
     </parent>
 
     <name>icecp-core</name>
     <groupId>com.intel.icecp</groupId>
     <artifactId>icecp-core</artifactId>
-    <version>0.12.12</version>
+    <version>0.13.0</version>
     <packaging>jar</packaging>
     <description>Core APIs for an Information-Centric Edge Compute Platform (ICECP) node.</description>
 

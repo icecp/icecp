@@ -11,7 +11,7 @@
 
     <groupId>com.intel.icecp</groupId>
     <artifactId>icecp</artifactId>
-    <version>0.12.12</version>
+    <version>0.13.0</version>
     <packaging>pom</packaging>
     <name>icecp</name> <!-- historical reason - aggregates code analysis -->
 
