@@ -18,6 +18,7 @@ package com.intel.icecp.core.security;
 import com.intel.icecp.core.attributes.Attributes;
 import com.intel.icecp.core.security.crypto.key.Key;
 import com.intel.icecp.core.security.crypto.key.SecretKey;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
 import com.intel.icecp.core.security.trust.TrustModel;
 import com.intel.icecp.core.security.trust.TrustModelProvider;
 import com.intel.icecp.core.security.trust.exception.TrustModelInstantiationError;
@@ -78,4 +79,12 @@ public interface TrustModels {
      */
     <S extends SecretKey, V extends Key> TrustModel<S, V> createTrustModel(String providerId, Attributes attributes) throws TrustModelInstantiationError;
 
+    
+    /**
+     * Returns the key manager that will be used by the trust models
+     * 
+     * @return A reference of type {@link KeyManager}
+     */
+    KeyManager keyManager();
+    
 }

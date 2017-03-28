@@ -24,7 +24,7 @@ import java.net.URI;
  * key characteristics.
  *
  */
-public class EncryptAttribute extends BaseAttribute<EncryptAttribute.EncryptionSpecs>{
+public class SymmetricEncryptionAttribute extends BaseAttribute<SymmetricEncryptionAttribute.EncryptionSpecs>{
     
     public static final String ATTRIBUTE_NAME = "encryption";
     
@@ -59,13 +59,13 @@ public class EncryptAttribute extends BaseAttribute<EncryptAttribute.EncryptionS
     }
     
     
-    public EncryptAttribute(EncryptionSpecs encryptionSpecs) {
+    public SymmetricEncryptionAttribute(EncryptionSpecs encryptionSpecs) {
         super(ATTRIBUTE_NAME, EncryptionSpecs.class);
         this.encryptionSpecs = encryptionSpecs;
     }
     
     
-    public EncryptAttribute(String encryptionAlgorithm, URI keyId, String keyAlgorithm, int keySize) {
+    public SymmetricEncryptionAttribute(String encryptionAlgorithm, URI keyId, String keyAlgorithm, int keySize) {
         this(new EncryptionSpecs(encryptionAlgorithm, keyId, keyAlgorithm, keySize));
     }
     
@@ -76,7 +76,7 @@ public class EncryptAttribute extends BaseAttribute<EncryptAttribute.EncryptionS
      * {@inheritDoc }
      */
     @Override
-    public EncryptAttribute.EncryptionSpecs value() {
+    public SymmetricEncryptionAttribute.EncryptionSpecs value() {
         return encryptionSpecs;
     }
 

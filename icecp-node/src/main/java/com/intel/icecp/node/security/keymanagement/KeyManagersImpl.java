@@ -19,14 +19,14 @@ import com.intel.icecp.core.attributes.Attributes;
 import com.intel.icecp.core.management.Channels;
 import com.intel.icecp.core.management.ConfigurationManager;
 import com.intel.icecp.core.security.KeyManagers;
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManager;
 import com.intel.icecp.core.security.keymanagement.exception.KeyManagerException;
 import com.intel.icecp.core.security.keymanagement.exception.KeyManagerNotSupportedException;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManagerProvider;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
+import com.intel.icecp.core.security.keymanagement.KeyManagerProvider;
 
 /**
  * Implementation of {@link KeyManagers}, which keeps each provider inside a 
@@ -39,7 +39,7 @@ public class KeyManagersImpl implements KeyManagers {
     private static final Logger LOGGER = LogManager.getLogger();
     
     /** Holds all registered providers */
-    private final Map<String, IcecpKeyManagerProvider> providers = new HashMap<>();
+    private final Map<String, KeyManagerProvider> providers = new HashMap<>();
     
     private final Channels channels;
 
@@ -55,7 +55,7 @@ public class KeyManagersImpl implements KeyManagers {
      * 
      */
     @Override
-    public boolean register(String keyManager, IcecpKeyManagerProvider provider) {
+    public boolean register(String keyManager, KeyManagerProvider provider) {
         // We do not want to replace an existing one (first unregister, 
         // than register a new one)
         if (!providers.containsKey(keyManager)) {
@@ -84,7 +84,7 @@ public class KeyManagersImpl implements KeyManagers {
      * 
      */
     @Override
-    public IcecpKeyManager get(String keyManager, Attributes attributes) throws KeyManagerNotSupportedException {
+    public KeyManager get(String keyManager, Attributes attributes) throws KeyManagerNotSupportedException {
         if (providers.containsKey(keyManager)) {
             try {
                 return providers.get(keyManager).get(channels, attributes);
@@ -102,7 +102,7 @@ public class KeyManagersImpl implements KeyManagers {
      * 
      */
     @Override
-    public IcecpKeyManager get(String keyManager, ConfigurationManager configuration) throws KeyManagerNotSupportedException {
+    public KeyManager get(String keyManager, ConfigurationManager configuration) throws KeyManagerNotSupportedException {
         if (providers.containsKey(keyManager)) {
             try {
                 return providers.get(keyManager).get(channels, configuration.get(providers.get(keyManager).id()));

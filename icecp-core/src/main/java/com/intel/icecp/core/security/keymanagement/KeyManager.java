@@ -25,9 +25,8 @@ import java.security.cert.Certificate;
 /**
  * Key management interface for ICECP It provides APIs to retrieve and store keys
  * and certificates, and to verify certificates validity;
- *
  */
-public interface IcecpKeyManager {
+public interface KeyManager {
 
     /**
      * Retrieves the public key corresponding to a given identifier

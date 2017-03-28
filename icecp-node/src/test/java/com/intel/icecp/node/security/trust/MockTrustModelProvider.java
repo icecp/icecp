@@ -19,12 +19,12 @@ import com.intel.icecp.core.attributes.Attributes;
 import com.intel.icecp.core.security.crypto.exception.key.InvalidKeyTypeException;
 import com.intel.icecp.core.security.crypto.key.asymmetric.PrivateKey;
 import com.intel.icecp.core.security.crypto.key.asymmetric.PublicKey;
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManager;
 import com.intel.icecp.core.security.trust.TrustModel;
 import com.intel.icecp.core.security.trust.TrustModelProvider;
 import com.intel.icecp.core.security.trust.exception.TrustModelInstantiationError;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
 
 
 /**
@@ -43,7 +43,7 @@ public class MockTrustModelProvider implements TrustModelProvider {
      *
      */
     @Override
-    public TrustModel<PrivateKey, PublicKey> build(IcecpKeyManager keyManager, Attributes attributes) throws TrustModelInstantiationError {
+    public TrustModel<PrivateKey, PublicKey> build(KeyManager keyManager, Attributes attributes) throws TrustModelInstantiationError {
         try {
             return new MockTrustModel();
         } catch (InvalidKeyTypeException ex) {

@@ -19,8 +19,8 @@ import com.intel.icecp.core.attributes.Attributes;
 import com.intel.icecp.core.security.SecurityService;
 import com.intel.icecp.core.security.crypto.key.Key;
 import com.intel.icecp.core.security.crypto.key.SecretKey;
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManager;
 import com.intel.icecp.core.security.trust.exception.TrustModelInstantiationError;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
 
 /**
  * Interface for a trust model provider, which can be loaded via Java SPI, (as
@@ -43,6 +43,6 @@ public interface TrustModelProvider extends SecurityService<String> {
      * @throws TrustModelInstantiationError In case of errors while creating the
      * trust model instance
      */
-    <S extends SecretKey, V extends Key> TrustModel<S, V> build(IcecpKeyManager keyManager, Attributes attributes) throws TrustModelInstantiationError;
+    <S extends SecretKey, V extends Key> TrustModel<S, V> build(KeyManager keyManager, Attributes attributes) throws TrustModelInstantiationError;
 
 }

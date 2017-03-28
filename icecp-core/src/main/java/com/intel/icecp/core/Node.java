@@ -19,10 +19,12 @@ import com.intel.icecp.core.management.Channels;
 import com.intel.icecp.core.metadata.Persistence;
 import com.intel.icecp.core.misc.ChannelLifetimeException;
 import com.intel.icecp.core.modules.Modules;
+import com.intel.icecp.core.security.TrustModels;
 
 import java.net.URI;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
 
 /**
  * Represent the functionality provided by a device; different device types will
@@ -109,4 +111,20 @@ public interface Node extends Describable {
     enum State implements Message {
         LOADING, ON, OFF
     }
+    
+    
+    /**
+     * Returns node's available trust models
+     * 
+     * @return 
+     */
+    public TrustModels getTrustModels();
+    
+    /**
+     * Returns ICECP key manager
+     * 
+     * @return 
+     */
+    public KeyManager getKeyManager();
+    
 }

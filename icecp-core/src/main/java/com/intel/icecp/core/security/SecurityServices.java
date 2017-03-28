@@ -94,5 +94,22 @@ public class SecurityServices<I, T extends SecurityService<I>> {
         return services.get(serviceType);
 
     }
+    
+    
+    
+    /**
+     * Returns the available services, and loads them if needed or if
+     * {@literal reload = True}
+     *
+     * @param reload If true, forces the execution of
+     * {@link SecurityServices#loadAvailableServices()}
+     * @return All the available services
+     */
+    public Map<I, T> getAll(boolean reload) {
+        if (services.isEmpty() || reload) {
+            loadAvailableServices();
+        }
+        return services;
+    }
 
 }

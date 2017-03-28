@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.net.URI;
 
 /**
- * Contains all signature details
+ * Contains all the required info to build a signing operation
  *
  */
 public class SignAttribute extends BaseAttribute<SignAttribute.SigningDetails> {
@@ -41,11 +41,13 @@ public class SignAttribute extends BaseAttribute<SignAttribute.SigningDetails> {
         /** Unique identifier of the key, as a URI such as: "ndn:/where/to/fetch/the/key" */
         public final URI signingKeyId;
         public final URI verificationKey;
+        public final String trustModelId;
         
-        public SigningDetails(String algorithmId, URI signingKeyId, URI verificationKey) {
+        public SigningDetails(String algorithmId, URI signingKeyId, URI verificationKey, String trustModelId) {
             this.algorithmId = algorithmId;
             this.signingKeyId = signingKeyId;
             this.verificationKey = verificationKey;
+            this.trustModelId = trustModelId;
         }
     }
     
@@ -54,8 +56,8 @@ public class SignAttribute extends BaseAttribute<SignAttribute.SigningDetails> {
         this.signingDetails = signingDetails;
     }
     
-    public SignAttribute(String algorithmId, URI signingKeyId, URI verificationKey) {
-        this(new SigningDetails(algorithmId, signingKeyId, verificationKey));
+    public SignAttribute(String algorithmId, URI signingKeyId, URI verificationKey, String trustModelId) {
+        this(new SigningDetails(algorithmId, signingKeyId, verificationKey, trustModelId));
     }
     
     /**

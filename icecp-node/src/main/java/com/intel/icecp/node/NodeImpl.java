@@ -39,6 +39,7 @@ import com.intel.icecp.core.misc.ChannelIOException;
 import com.intel.icecp.core.misc.ChannelLifetimeException;
 import com.intel.icecp.core.modules.Modules;
 import com.intel.icecp.core.permissions.NodePermission;
+import com.intel.icecp.core.security.TrustModels;
 import com.intel.icecp.node.management.ModulesImpl;
 import com.intel.icecp.node.messages.NodeInfoMessage;
 import com.intel.icecp.node.utils.SecurityUtils;
@@ -55,6 +56,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
 
 /**
  * Implement an NDN-based ICECP node.
@@ -73,6 +75,9 @@ class NodeImpl implements Node {
     private Channel<Node.State> statusChannel;
     private long startTime = -1;
     private RpcServer rpcServer;
+    
+    // Trust models available to the node
+    private final TrustModels trustModels;
 
     /**
      * Build a {@link Node} using NDN channels.
@@ -84,10 +89,11 @@ class NodeImpl implements Node {
      * itself)
      * @param eventLoop the executor service used for managing IO tasks in an event loop
      */
-    NodeImpl(String name, Channels channels, PermissionsManager permissionsManager, ConfigurationManager configurationManager, ScheduledExecutorService eventLoop, Events events) {
+    NodeImpl(String name, Channels channels, TrustModels trustModels, PermissionsManager permissionsManager, ConfigurationManager configurationManager, ScheduledExecutorService eventLoop, Events events) {
         this.name = name;
         this.channels = channels;
         this.modules = new ModulesImpl(this, permissionsManager, configurationManager);
+        this.trustModels = trustModels;
         this.eventLoop = eventLoop;
         this.events = events;
         this.attributes = new AttributesImpl(channels, getDefaultUri());
@@ -336,4 +342,25 @@ class NodeImpl implements Node {
             }
         }
     }
+    
+    
+    /**
+     * {@inheritDoc } 
+     * 
+     */
+    @Override
+    public TrustModels getTrustModels() {
+        return trustModels;
+    }
+    
+    
+    /**
+     * {@inheritDoc }
+     * 
+     */
+    @Override
+    public KeyManager getKeyManager() {
+        return trustModels.keyManager();
+    }
+    
 }

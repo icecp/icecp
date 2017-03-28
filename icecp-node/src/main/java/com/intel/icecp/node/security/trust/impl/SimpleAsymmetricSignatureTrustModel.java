@@ -17,20 +17,20 @@ package com.intel.icecp.node.security.trust.impl;
 
 import com.intel.icecp.core.security.crypto.key.asymmetric.PrivateKey;
 import com.intel.icecp.core.security.crypto.key.asymmetric.PublicKey;
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManager;
 import com.intel.icecp.core.security.keymanagement.exception.KeyManagerException;
 import com.intel.icecp.core.security.trust.TrustModel;
 import com.intel.icecp.core.security.trust.exception.TrustModelException;
 import java.net.URI;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
 
 /**
  * Simple trust model class intended for testing/quick prototyping:
  * <ol>
  * <li> Signing key is an instance of {@link PrivateKey}, and is assumed to be 
- * fetched from the default {@link IcecpKeyManager}; </li>
+ * fetched from the default {@link KeyManager}; </li>
  * <li> Verification key is an instance of {@link PublicKey}, and is assumed to be 
- * fetched from the default {@link IcecpKeyManager}; </li>
- * <li> Verification key is searched only in the supplied {@link IcecpKeyManager}, 
+ * fetched from the default {@link KeyManager}; </li>
+ * <li> Verification key is searched only in the supplied {@link KeyManager}, 
  * and is assumed to be trusted. </li>
  * </ol>
  * 
@@ -38,10 +38,10 @@ import java.net.URI;
 public class SimpleAsymmetricSignatureTrustModel implements TrustModel <PrivateKey, PublicKey>{
 
     /** Key manager instance*/
-    private final IcecpKeyManager keyManager;
+    private final KeyManager keyManager;
 
     
-    public SimpleAsymmetricSignatureTrustModel(IcecpKeyManager keyManager) {
+    public SimpleAsymmetricSignatureTrustModel(KeyManager keyManager) {
         this.keyManager = keyManager;
     }
    
@@ -53,7 +53,7 @@ public class SimpleAsymmetricSignatureTrustModel implements TrustModel <PrivateK
         try {
             // Retrieve the secret (private) key from the key manager
             return keyManager.getPrivateKey(signingKeyId);
-        } catch (KeyManagerException ex) {
+        } catch (NullPointerException | KeyManagerException ex) {
             throw new TrustModelException("Unable to find private key with ID " + signingKeyId.toString(), ex);
         }
                 
@@ -67,7 +67,7 @@ public class SimpleAsymmetricSignatureTrustModel implements TrustModel <PrivateK
         try {
             // Retrieve the public key from the key manager
             return keyManager.getPublicKey(verifyingKeyId);
-        } catch (KeyManagerException ex) {
+        } catch (NullPointerException | KeyManagerException ex) {
             throw new TrustModelException("Unable to find public key with ID " + verifyingKeyId.toString(), ex);
         }
     }

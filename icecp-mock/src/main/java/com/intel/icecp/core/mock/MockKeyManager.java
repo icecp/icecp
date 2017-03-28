@@ -19,7 +19,7 @@ import com.intel.icecp.core.security.crypto.key.Key;
 import com.intel.icecp.core.security.crypto.key.asymmetric.PrivateKey;
 import com.intel.icecp.core.security.crypto.key.asymmetric.PublicKey;
 import com.intel.icecp.core.security.crypto.key.symmetric.SymmetricKey;
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManager;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
 import com.intel.icecp.core.security.keymanagement.exception.KeyManagerException;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -45,7 +45,7 @@ import org.apache.logging.log4j.Logger;
  * hash maps.
  *
  */
-public class MockKeyManager implements IcecpKeyManager {
+public class MockKeyManager implements KeyManager {
 
     private static final Logger LOGGER = LogManager.getLogger();
     
@@ -151,26 +151,20 @@ public class MockKeyManager implements IcecpKeyManager {
         throw new KeyManagerException("Key " + keyId + NOT_FOUND);
     }
 
-    private <T> T getKeyOfType(URI keyId, Class<T> desiredClass) throws KeyManagerException {
-        if (keystore.containsKey(keyId)) {
-            Key theKey = keystore.get(keyId);
-            if (desiredClass.isAssignableFrom(theKey.getClass())) {
-                return (T) theKey;
-            } else {
-                throw new KeyManagerException("Key " + keyId + " is not the correct type; type is <" + theKey.getClass() + ">; desired is <" + desiredClass + ">");
-            }
-        } else {
-            throw new KeyManagerException("Key " + keyId + NOT_FOUND);
-        }
-    }
-
     /**
      * {@inheritDoc }
      * 
      */
     @Override
     public PrivateKey getPrivateKey(URI keyId) throws KeyManagerException {
-        return getKeyOfType(keyId, PrivateKey.class);
+        try {
+            if (keystore.containsKey(keyId)) {
+                return (PrivateKey) keystore.get(keyId);
+            }
+        } catch (ClassCastException ex) {
+            throw new KeyManagerException("Key " + keyId + " is not a private key", ex);
+        }
+        throw new KeyManagerException("Key " + keyId + NOT_FOUND);
     }
 
     /**
@@ -179,7 +173,14 @@ public class MockKeyManager implements IcecpKeyManager {
      */
     @Override
     public SymmetricKey getSymmetricKey(URI keyId) throws KeyManagerException {
-        return getKeyOfType(keyId, SymmetricKey.class);
+        try {
+            if (keystore.containsKey(keyId)) {
+                return (SymmetricKey) keystore.get(keyId);
+            }
+        } catch (ClassCastException ex) {
+            throw new KeyManagerException("Key " + keyId + " is not a symmetric key", ex);
+        }
+        throw new KeyManagerException("Key " + keyId + NOT_FOUND);
     }
 
     /**

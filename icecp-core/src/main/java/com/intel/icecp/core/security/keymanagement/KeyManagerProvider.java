@@ -23,9 +23,8 @@ import com.intel.icecp.core.security.keymanagement.exception.KeyManagerException
 
 /**
  * Provider class that handles key manager specific initializations.
- *
  */
-public interface IcecpKeyManagerProvider extends SecurityService<String> {
+public interface KeyManagerProvider extends SecurityService<String> {
     
     /**
      * Returns a key manager
@@ -35,7 +34,7 @@ public interface IcecpKeyManagerProvider extends SecurityService<String> {
      * @return An instance of a key manager
      * @throws KeyManagerException If the key manager cannot be created
      */
-    IcecpKeyManager get(Channels keyChannels, Attributes attributes) throws KeyManagerException;
+    KeyManager get(Channels keyChannels, Attributes attributes) throws KeyManagerException;
     
     /**
      * Returns a key manager
@@ -45,6 +44,6 @@ public interface IcecpKeyManagerProvider extends SecurityService<String> {
      * @return An instance of a key manager
      * @throws KeyManagerException If the key manager cannot be created
      */
-    IcecpKeyManager get(Channels keyChannels, Configuration configuration) throws KeyManagerException;
+    KeyManager get(Channels keyChannels, Configuration configuration) throws KeyManagerException;
     
 }

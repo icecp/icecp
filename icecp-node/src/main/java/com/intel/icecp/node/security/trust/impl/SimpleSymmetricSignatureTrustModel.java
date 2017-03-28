@@ -16,24 +16,24 @@
 package com.intel.icecp.node.security.trust.impl;
 
 import com.intel.icecp.core.security.crypto.key.symmetric.SymmetricKey;
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManager;
 import com.intel.icecp.core.security.keymanagement.exception.KeyManagerException;
 import com.intel.icecp.core.security.trust.TrustModel;
 import com.intel.icecp.core.security.trust.exception.TrustModelException;
 import java.net.URI;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
 
 /**
  * Simple {@link TrustModel} for symmetric signing that fetches the symmetric 
- * key used for both signing and verification from a given {@link IcecpKeyManager}.
+ * key used for both signing and verification from a given {@link KeyManager}.
  * Keys are trusted by default.
  *
  */
 public class SimpleSymmetricSignatureTrustModel implements TrustModel<SymmetricKey, SymmetricKey>{
 
     /** Key manager */
-    private final IcecpKeyManager keyManager;
+    private final KeyManager keyManager;
     
-    public SimpleSymmetricSignatureTrustModel(IcecpKeyManager keyManager) {
+    public SimpleSymmetricSignatureTrustModel(KeyManager keyManager) {
         this.keyManager = keyManager;
     }
     
@@ -41,12 +41,12 @@ public class SimpleSymmetricSignatureTrustModel implements TrustModel<SymmetricK
      * Fetches the symmetric key identified by keyId from the key manager
      * 
      * @return The symmetric key for signing/verifying
-     * @throws TrustModelException In case of null keyManager or key not found
+     * @throws KeyNotFoundException In case of null keyManager or key not found
      */
     private SymmetricKey fetchKey(URI keyId) throws TrustModelException {
         try {
             return keyManager.getSymmetricKey(keyId);
-        } catch (KeyManagerException ex) {
+        } catch (NullPointerException | KeyManagerException ex) {
             throw new TrustModelException("Unable to fetch symmetric key " + keyId, ex);
         }
     }

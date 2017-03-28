@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.intel.icecp.node;
 
 import java.net.URI;
@@ -29,27 +28,38 @@ import org.apache.logging.log4j.Logger;
 
 import com.intel.icecp.core.Node;
 import com.intel.icecp.core.channels.ChannelProvider;
+import com.intel.icecp.core.channels.Token;
 import com.intel.icecp.core.event.Events;
 import com.intel.icecp.core.management.Channels;
 import com.intel.icecp.core.management.ConfigurationManager;
 import com.intel.icecp.core.mock.MockChannelProvider;
+import com.intel.icecp.core.security.SecurityServices;
+import com.intel.icecp.node.security.trust.TrustModelsImpl;
+import com.intel.icecp.core.security.TrustModels;
+import com.intel.icecp.core.security.trust.TrustModelProvider;
+import com.intel.icecp.node.security.keymanagement.impl.KeyStoreBasedManager;
 import com.intel.icecp.node.channels.file.FileChannelProvider;
 import com.intel.icecp.node.management.FileConfigurationManager;
 import com.intel.icecp.node.management.FilePermissionsManager;
 import com.intel.icecp.node.utils.ConfigurationUtils;
+import java.util.Map;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
 
 /**
- * Convenience utility for setting up all required objects before starting the daemon or running tests.
+ * Convenience utility for setting up all required objects before starting the
+ * daemon or running tests.
  *
  */
 public class NodeFactory {
+
     private static final int THREADS_PER_CPU = 16;
     private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Configure and return a default node.
      *
-     * @param nodeName the unique identifying name for the device (e.g. /intel/node/1234)
+     * @param nodeName the unique identifying name for the device (e.g.
+     * /intel/node/1234)
      * @return a configured {@link Node}
      */
     public static Node buildDefaultNode(String nodeName, Path configurationPath, Path permissionsPath) {
@@ -59,10 +69,12 @@ public class NodeFactory {
         FilePermissionsManager permissionsManager = new FilePermissionsManager(permissionsPath, fileChannelBuilder);
         ConfigurationManager configurationManager = new FileConfigurationManager(configurationPath, fileChannelBuilder);
 
-        Channels channelManager = buildChannels(eventLoop, configurationManager);
-        Events eventService = new ChannelNotifyingEventsImpl(URI.create("ndn:/intel/events"), channelManager.get("ndn"));
-
-        return new NodeImpl(nodeName, channelManager, permissionsManager, configurationManager, eventLoop, eventService);
+        Channels channels = buildChannels(eventLoop, configurationManager);
+        Events eventService = new ChannelNotifyingEventsImpl(URI.create("ndn:/intel/events"), channels.get("ndn"));
+        
+        // Load the available trust model providers
+        TrustModels trustModels = loadTrustModels(getDefaultKeyManager(channels, configurationManager));
+        return new NodeImpl(nodeName, channels, trustModels, permissionsManager, configurationManager, eventLoop, eventService);
     }
 
     public static Channels buildChannels(ScheduledExecutorService eventLoop, ConfigurationManager configurationManager) {
@@ -85,11 +97,12 @@ public class NodeFactory {
     /**
      * @param <T> the interface to implement
      * @param type a {@link Class} of the SPI interface
-     * @return implementations of a given interface; must be defined according to Java SPI specification
+     * @return implementations of a given interface; must be defined according
+     * to Java SPI specification
      */
     public static <T> List<T> loadImplementations(Class<T> type, ClassLoader classLoader) {
 
-        java.util.ServiceLoader<T> load;
+        java.util.ServiceLoader<T> load = null;
         if (classLoader == null) {
             load = java.util.ServiceLoader.load(type);
         } else {
@@ -118,7 +131,8 @@ public class NodeFactory {
     /**
      * Configure and return a test node
      *
-     * @param nodeName the unique identifying name for the device (e.g. /intel/device/1234)
+     * @param nodeName the unique identifying name for the device (e.g.
+     * /intel/device/1234)
      * @return a configured {@link Node}
      */
     public static Node buildTestNode(String nodeName) {
@@ -130,8 +144,10 @@ public class NodeFactory {
 
         Channels channels = buildChannels(eventLoop, configurationManager);
         Events eventService = new ChannelNotifyingEventsImpl(URI.create("ndn:/intel/events"), channels.get("ndn"));
-
-        return new NodeImpl(nodeName, channels, permissionsManager, configurationManager, eventLoop, eventService);
+        
+        // Load the available trust model providers
+        TrustModels trustModels = loadTrustModels(getDefaultKeyManager(channels, configurationManager));
+        return new NodeImpl(nodeName, channels, trustModels, permissionsManager, configurationManager, eventLoop, eventService);
     }
 
     /**
@@ -147,11 +163,41 @@ public class NodeFactory {
         FilePermissionsManager permissionsManager = new FilePermissionsManager(ConfigurationUtils.getPermissionsPath(), fileChannelBuilder);
         ConfigurationManager configurationManager = new FileConfigurationManager(ConfigurationUtils.getConfigurationPath(), fileChannelBuilder);
 
-        Channels channelManager = new ChannelsImpl(eventLoop, configurationManager);
-        channelManager.register("*", new MockChannelProvider());
+        Channels channels = new ChannelsImpl(eventLoop, configurationManager);
+        channels.register("*", new MockChannelProvider());
 
-        Events eventService = new ChannelNotifyingEventsImpl(URI.create("mock:/intel/events"), channelManager.get("mock"));
+        Events eventService = new ChannelNotifyingEventsImpl(URI.create("mock:/intel/events"), channels.get("mock"));
+        
+        // Load the available trust model providers
+        TrustModels trustModels = loadTrustModels(getDefaultKeyManager(channels, configurationManager));
+        return new NodeImpl(nodeName, channels, trustModels, permissionsManager, configurationManager, eventLoop, eventService);
+    }
 
-        return new NodeImpl(nodeName, channelManager, permissionsManager, configurationManager, eventLoop, eventService);
+    /**
+     * Loads all the available trust model providers, and returns an instance of
+     * type {@link TrustModels}.
+     *
+     * @param keyManager Key manager
+     * @return a reference of type {@link TrustModels}
+     */
+    private static TrustModels loadTrustModels(KeyManager keyManager) {
+        TrustModels trustModels = new TrustModelsImpl(keyManager);
+
+        SecurityServices<String, TrustModelProvider> services = new SecurityServices<>(Token.of(TrustModelProvider.class));
+        Map<String, TrustModelProvider> providers = services.getAll(false);
+
+        for (Map.Entry<String, TrustModelProvider> entry : providers.entrySet()) {
+            trustModels.register(entry.getKey(), entry.getValue());
+        }
+
+        return trustModels;
+    }
+
+    
+    /**
+     * @return a default key manager
+     */
+    private static KeyManager getDefaultKeyManager(Channels channels, ConfigurationManager configurationManager) {
+        return new KeyStoreBasedManager(channels, configurationManager.get("keymanager"));
     }
 }

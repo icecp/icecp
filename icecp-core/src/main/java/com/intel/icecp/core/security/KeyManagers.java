@@ -15,15 +15,15 @@
  */
 package com.intel.icecp.core.security;
 
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManagerProvider;
 import com.intel.icecp.core.attributes.Attributes;
 import com.intel.icecp.core.management.ConfigurationManager;
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManager;
 import com.intel.icecp.core.security.keymanagement.exception.KeyManagerNotSupportedException;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
+import com.intel.icecp.core.security.keymanagement.KeyManagerProvider;
 
 /**
- * Interface to create and use key managers ({@link IcecpKeyManager}), starting from
- * their registered {@link IcecpKeyManagerProvider}s.
+ * Interface to create and use key managers ({@link KeyManager}), starting from
+ * their registered {@link KeyManagerProvider}s.
  * In principle, this is similar to (but way simpler than) 
  * {@link com.intel.icecp.core.management.Channels}.
  * 
@@ -35,7 +35,7 @@ import com.intel.icecp.core.security.keymanagement.exception.KeyManagerNotSuppor
  * ...
  * managers.register(SOME_KEY_MANAGER_PROVIDER, provider);
  * ...
- * IcecpKeyManager km = managers.get(SOME_KEY_MANAGER_PROVIDER, attributes);
+ * DeapKeyManager km = managers.get(SOME_KEY_MANAGER_PROVIDER, attributes);
  * ...
  * </code></pre>
  *
@@ -50,7 +50,7 @@ public interface KeyManagers {
      * @param provider Reference to a key manager provider
      * @return {@literal true} if the provider has been registered; {@literal false} otherwise
      */
-    boolean register(String keyManager, IcecpKeyManagerProvider provider);
+    boolean register(String keyManager, KeyManagerProvider provider);
     
     /**
      * Tells whether the given key manager has been registered
@@ -77,7 +77,7 @@ public interface KeyManagers {
      * @return An instance of key manager
      * @throws KeyManagerNotSupportedException If the key manager cannot be instantiated
      */
-    IcecpKeyManager get(String keyManager, Attributes attributes) throws KeyManagerNotSupportedException;
+    KeyManager get(String keyManager, Attributes attributes) throws KeyManagerNotSupportedException;
     
     
     /**
@@ -88,6 +88,6 @@ public interface KeyManagers {
      * @return An instance of key manager
      * @throws KeyManagerNotSupportedException If the key manager cannot be instantiated
      */
-    IcecpKeyManager get(String keyManager, ConfigurationManager configuration) throws KeyManagerNotSupportedException;
+    KeyManager get(String keyManager, ConfigurationManager configuration) throws KeyManagerNotSupportedException;
     
 }

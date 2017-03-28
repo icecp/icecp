@@ -21,8 +21,6 @@ import com.intel.icecp.core.misc.Configuration;
 import com.intel.icecp.core.security.crypto.key.asymmetric.PrivateKey;
 import com.intel.icecp.core.security.crypto.key.asymmetric.PublicKey;
 import com.intel.icecp.core.security.crypto.key.symmetric.SymmetricKey;
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManager;
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManagerProvider;
 import com.intel.icecp.core.security.keymanagement.exception.KeyManagerException;
 import com.intel.icecp.core.security.keymanagement.exception.KeyManagerNotSupportedException;
 import com.intel.icecp.node.AttributesFactory;
@@ -31,6 +29,8 @@ import java.security.cert.Certificate;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
+import com.intel.icecp.core.security.keymanagement.KeyManagerProvider;
 
 /**
  * Test for class {@link KeyManagersImpl}
@@ -46,7 +46,7 @@ public class KeyManagersImplTest {
     /**
      * Mock key manager
      */
-    class MockKeyManager implements IcecpKeyManager {
+    class MockKeyManager implements KeyManager {
 
         @Override
         public PublicKey getPublicKey(URI keyId) throws KeyManagerException {
@@ -88,16 +88,16 @@ public class KeyManagersImplTest {
     /**
      * Mock key manager provider
      */
-    class MockKeyManagerProvider implements IcecpKeyManagerProvider {
+    class MockKeyManagerProvider implements KeyManagerProvider {
 
 
         @Override
-        public IcecpKeyManager get(Channels channels, Configuration configuration) throws KeyManagerException {
+        public KeyManager get(Channels channels, Configuration configuration) throws KeyManagerException {
             return new MockKeyManager();
         }
         
         @Override
-        public IcecpKeyManager get(Channels channels, Attributes attributes) throws KeyManagerException {
+        public KeyManager get(Channels channels, Attributes attributes) throws KeyManagerException {
             return new MockKeyManager();
         }
 
@@ -119,7 +119,7 @@ public class KeyManagersImplTest {
     }
 
     /**
-     * Test for {@link KeyManagersImpl#register(java.lang.String, com.intel.icecp.core.security.keymanagement.IcecpKeyManagerProvider, com.intel.icecp.core.attributes.Attributes)
+     * Test for {@link KeyManagersImpl#register(java.lang.String, com.intel.icecp.core.security.keymanagement.DeapKeyManagerProvider, com.intel.icecp.core.attributes.Attributes)
      * }
      * Should work correctly
      *

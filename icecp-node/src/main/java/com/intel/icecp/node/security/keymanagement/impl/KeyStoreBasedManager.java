@@ -27,7 +27,6 @@ import com.intel.icecp.core.security.keymanagement.exception.KeyManagerException
 import com.intel.icecp.core.security.crypto.key.asymmetric.PrivateKey;
 import com.intel.icecp.core.security.crypto.key.asymmetric.PublicKey;
 import com.intel.icecp.core.security.crypto.key.symmetric.SymmetricKey;
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManager;
 import com.intel.icecp.node.security.SecurityConstants;
 import com.intel.icecp.node.security.utils.PemEncodingUtils;
 import com.intel.icecp.node.utils.SecurityUtils;
@@ -67,6 +66,7 @@ import java.util.concurrent.ExecutionException;
 import javax.crypto.SecretKey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
 
 /**
  * Implementation of key manager using Java {@link java.security.KeyStore}, which
@@ -83,7 +83,7 @@ import org.apache.logging.log4j.Logger;
  *  
  * 
  */
-public class KeyStoreBasedManager implements IcecpKeyManager, AutoCloseable {
+public class KeyStoreBasedManager implements KeyManager, AutoCloseable {
     
     /** Constant error messages */
     private static final String ERR_MSG_UNABLE_TO_FETCH_CERTIFICATE = "Unable to retrieve certificate ";
@@ -132,7 +132,7 @@ public class KeyStoreBasedManager implements IcecpKeyManager, AutoCloseable {
         try {
             // Load the configuration
             this.configuration.load();
-        } catch(ChannelIOException ex) {
+        } catch(NullPointerException | ChannelIOException ex) {
             // If fails, we use the default parameters
             LOGGER.warn("Unable to read key manager configuration from file.", ex);
         }

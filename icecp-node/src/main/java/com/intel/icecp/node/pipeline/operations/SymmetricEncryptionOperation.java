@@ -23,7 +23,6 @@ import com.intel.icecp.core.security.crypto.exception.cipher.CipherDecryptionErr
 import com.intel.icecp.core.security.crypto.exception.cipher.CipherEncryptionError;
 import com.intel.icecp.core.security.crypto.exception.cipher.UnsupportedCipherException;
 import com.intel.icecp.core.security.crypto.key.symmetric.SymmetricKey;
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManager;
 import com.intel.icecp.core.security.keymanagement.exception.KeyManagerException;
 import com.intel.icecp.node.utils.StreamUtils;
 
@@ -31,6 +30,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
 
 /**
  * Operation that takes as input an InputStream and produces as output a encrypted
@@ -44,9 +44,9 @@ public class SymmetricEncryptionOperation extends Operation<InputStream, BytesMe
     /** ID of the algorithm to use */
     private final String algorithm;
     /** Key manager to use*/
-    private final IcecpKeyManager keyManager;
+    private final KeyManager keyManager;
 
-    public SymmetricEncryptionOperation(URI keyID, String algorithm, IcecpKeyManager keyManager) {
+    public SymmetricEncryptionOperation(URI keyID, String algorithm, KeyManager keyManager) {
         super(InputStream.class, BytesMessage.class);
         this.keyID = keyID;
         this.algorithm = algorithm;
@@ -64,7 +64,7 @@ public class SymmetricEncryptionOperation extends Operation<InputStream, BytesMe
             SymmetricKey key = keyManager.getSymmetricKey(keyID);
             // Create the encrypted message
             return new BytesMessage(CryptoProvider.getCipher(algorithm, false).encrypt(bytes, key));
-        } catch (KeyManagerException | IOException | UnsupportedCipherException | CipherEncryptionError | SecurityException | IllegalArgumentException ex) {
+        } catch (NullPointerException | KeyManagerException | IOException | UnsupportedCipherException | CipherEncryptionError | SecurityException | IllegalArgumentException ex) {
             throw new OperationException("SymmetricEncryptionOperation encryption failed.", ex);
         }
     }
@@ -80,7 +80,7 @@ public class SymmetricEncryptionOperation extends Operation<InputStream, BytesMe
             byte[] decBytes = CryptoProvider.getCipher(algorithm, false).decrypt(input.getBytes(), key);
             // Returns the decrypted data.
             return new ByteArrayInputStream(decBytes);
-        } catch (CipherDecryptionError | UnsupportedCipherException | KeyManagerException ex) {
+        } catch (NullPointerException | CipherDecryptionError | UnsupportedCipherException | KeyManagerException ex) {
             throw new OperationException("SymmetricEncryptionOperation decryption failed.", ex);
         }
     }

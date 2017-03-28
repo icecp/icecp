@@ -18,11 +18,11 @@ package com.intel.icecp.node.security.trust.impl;
 import com.intel.icecp.core.attributes.Attributes;
 import com.intel.icecp.core.security.crypto.key.asymmetric.PrivateKey;
 import com.intel.icecp.core.security.crypto.key.asymmetric.PublicKey;
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManager;
 import com.intel.icecp.core.security.trust.TrustModel;
 import com.intel.icecp.core.security.trust.TrustModelProvider;
 import com.intel.icecp.core.security.trust.exception.TrustModelInstantiationError;
 import com.intel.icecp.node.security.SecurityConstants;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
 
 /**
  * Provider class for {@link HierarchicalTrustModel}
@@ -35,7 +35,7 @@ public class HierarchicalTrustModelProvider implements TrustModelProvider {
      * 
      */
     @Override
-    public TrustModel<PrivateKey, PublicKey> build(IcecpKeyManager keyManager, Attributes attributes) throws TrustModelInstantiationError {
+    public TrustModel<PrivateKey, PublicKey> build(KeyManager keyManager, Attributes attributes) throws TrustModelInstantiationError {
         return new HierarchicalTrustModel(keyManager);
     }
 

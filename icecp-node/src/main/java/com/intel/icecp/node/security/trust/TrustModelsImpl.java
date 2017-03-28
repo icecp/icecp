@@ -19,12 +19,12 @@ import com.intel.icecp.core.attributes.Attributes;
 import com.intel.icecp.core.security.TrustModels;
 import com.intel.icecp.core.security.crypto.key.Key;
 import com.intel.icecp.core.security.crypto.key.SecretKey;
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManager;
 import com.intel.icecp.core.security.trust.TrustModel;
 import com.intel.icecp.core.security.trust.TrustModelProvider;
 import com.intel.icecp.core.security.trust.exception.TrustModelInstantiationError;
 import java.util.HashMap;
 import java.util.Map;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
 
 /**
  * Implementation of {@link TrustModels}; providers are maintained in a
@@ -41,9 +41,9 @@ public class TrustModelsImpl implements TrustModels {
     /**
      * Key manager to pass in to trust model provider
      */
-    private final IcecpKeyManager keyManager;
+    private final KeyManager keyManager;
 
-    public TrustModelsImpl(IcecpKeyManager keyManager) {
+    public TrustModelsImpl(KeyManager keyManager) {
         this.keyManager = keyManager;
     }
 
@@ -97,4 +97,17 @@ public class TrustModelsImpl implements TrustModels {
         throw new TrustModelInstantiationError("The given trust model provider " + providerId + " does not exist");
     }
 
+    
+    /**
+     * {@inheritDoc }
+     * 
+     */
+    @Override
+    public KeyManager keyManager() {
+        return keyManager;
+    }
+
+    
+    
+    
 }

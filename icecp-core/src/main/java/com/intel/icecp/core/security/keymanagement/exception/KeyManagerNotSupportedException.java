@@ -15,10 +15,10 @@
  */
 package com.intel.icecp.core.security.keymanagement.exception;
 
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManager;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
 
 /**
- * Exception thrown when is not possible to load a specific {@link IcecpKeyManager}
+ * Exception thrown when is not possible to load a specific {@link DeapKeyManager}
  * 
  */
 public class KeyManagerNotSupportedException extends Exception {

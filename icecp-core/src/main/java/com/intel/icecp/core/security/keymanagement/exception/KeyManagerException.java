@@ -15,10 +15,10 @@
  */
 package com.intel.icecp.core.security.keymanagement.exception;
 
-import com.intel.icecp.core.security.keymanagement.IcecpKeyManager;
+import com.intel.icecp.core.security.keymanagement.KeyManager;
 
 /**
- * Exception thrown in case of error in {@link IcecpKeyManager} operations
+ * Exception thrown in case of error in {@link DeapKeyManager} operations
  *
  */
 public class KeyManagerException extends Exception {
