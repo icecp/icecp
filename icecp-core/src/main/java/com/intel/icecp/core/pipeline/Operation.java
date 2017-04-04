@@ -26,64 +26,62 @@ import com.intel.icecp.core.pipeline.exception.OperationException;
  * @param <O>
  */
 public abstract class Operation<I, O> {
-    
-    /** Input and output type as instance of {@link Token}*/
+
+    /**
+     * Input and output type as instance of {@link Token}
+     */
     protected Token<I> inputType;
     protected Token<O> outputType;
 
     /**
      * Constructor to use in case of generic types (e.g., {@literal List<String>})
-     * 
-     * @param inputType
-     * @param outputType 
+     *
+     * @param inputType the type of the object entering the first stage in the pipeline
+     * @param outputType the type of object leaving the pipeline
      */
     protected Operation(Token<I> inputType, Token<O> outputType) {
         this.inputType = inputType;
         this.outputType = outputType;
     }
-    
+
     /**
      * Constructor to use in case of non-generic types (e.g., {@literal String})
-     * 
-     * @param inputType
-     * @param outputType 
+     *
+     * @param inputType the type of the object entering the first stage in the pipeline
+     * @param outputType the type of object leaving the pipeline
      */
     protected Operation(Class<I> inputType, Class<O> outputType) {
         this.inputType = Token.of(inputType);
         this.outputType = Token.of(outputType);
     }
-    
+
     /**
      * Performs a specific operation given an input of type {@literal I}
      *
-     * @param input of type {@literal O}
-     * @return The result of the execution of this operation
-     * @throws com.intel.icecp.core.pipeline.exception.OperationException
+     * @param input the incoming object passed to the pipeline's first stage
+     * @return the converted object after all stages execute
+     * @throws com.intel.icecp.core.pipeline.exception.OperationException if a stage fails
      */
     public abstract O execute(I input) throws OperationException;
 
     /**
      * Performs a specific reverse operation (if possible) given an input
      *
-     * @param input
-     * @return
-     * @throws com.intel.icecp.core.pipeline.exception.OperationException
+     * @param input the incoming pipeline passed to the pipeline's last stage (pipeline is reversed)
+     * @return the converted object after all stages execute
+     * @throws com.intel.icecp.core.pipeline.exception.OperationException if a stage fails
      */
     public abstract I executeInverse(O input) throws OperationException;
 
     /**
-     * Return the input type for this operation
-     *
-     * @return
+     * @return the type of the object entering the first stage in the pipeline
      */
     public Token<I> getInputType() {
         return inputType;
     }
 
     /**
-     * Returns the output type for this operation
-     *
-     * @return
+     * @return the type of object leaving the pipeline
      */
     public Token<O> getOutputType() {
         return outputType;

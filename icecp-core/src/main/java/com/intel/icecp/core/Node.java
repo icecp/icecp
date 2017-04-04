@@ -29,7 +29,6 @@ import com.intel.icecp.core.security.keymanagement.KeyManager;
 /**
  * Represent the functionality provided by a device; different device types will
  * add functionality.
- *
  */
 public interface Node extends Describable {
 
@@ -111,20 +110,14 @@ public interface Node extends Describable {
     enum State implements Message {
         LOADING, ON, OFF
     }
-    
-    
+
     /**
-     * Returns node's available trust models
-     * 
-     * @return 
+     * @return the node's available trust models
      */
     public TrustModels getTrustModels();
-    
+
     /**
-     * Returns ICECP key manager
-     * 
-     * @return 
+     * @return the node's key manager
      */
     public KeyManager getKeyManager();
-    
 }

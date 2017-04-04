@@ -18,15 +18,14 @@ package com.intel.icecp.core.security.keymanagement.exception;
 import com.intel.icecp.core.security.keymanagement.KeyManager;
 
 /**
- * Exception thrown when is not possible to load a specific {@link DeapKeyManager}
- * 
+ * Exception thrown when is not possible to load a specific {@link KeyManager}
  */
 public class KeyManagerNotSupportedException extends Exception {
 
     public KeyManagerNotSupportedException(String string) {
         super(string);
     }
-    
+
     public KeyManagerNotSupportedException(String string, Throwable cause) {
         super(string, cause);
     }

@@ -28,8 +28,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- */
 public class CborFormat<T extends Message> implements Format<T> {
 
     private final ObjectMapper jacksonObjectMapper;
@@ -42,6 +40,8 @@ public class CborFormat<T extends Message> implements Format<T> {
     /**
      * Build a {@link Format} instance that parses JSON into the specified class.  Use this constructor for generic
      * types (e.g. {@literal List<String>}).
+     *
+     * @param type the type of message to encode/decode
      */
     public CborFormat(Token<T> type) {
         CBORFactory factory = new CBORFactory();

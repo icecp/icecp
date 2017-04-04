@@ -17,12 +17,13 @@ package com.intel.icecp.core.attributes;
 
 import com.intel.icecp.core.Message;
 import com.intel.icecp.core.channels.Token;
+
 import java.io.Serializable;
 
 /**
  * Attribute representing a format
  *
- * @param <M> Message type
+ * @param <M> the message type
  */
 public class FormatAttribute<M extends Message> extends BaseAttribute<FormatAttribute.FormatInfo> {
 
@@ -31,10 +32,10 @@ public class FormatAttribute<M extends Message> extends BaseAttribute<FormatAttr
     private final FormatInfo formatInfo;
 
     /**
-     * Collects the necessary format info, i.e., {@link #format} and
+     * Collects the necessary format info, i.e., {@link #formatInfo} and
      * {@link #type}
      *
-     * @param <M1>
+     * @param <M1> the message type
      */
     public static class FormatInfo<M1 extends Message> implements Serializable {
 
@@ -54,7 +55,6 @@ public class FormatAttribute<M extends Message> extends BaseAttribute<FormatAttr
 
     /**
      * {@inheritDoc }
-     *
      */
     @Override
     public FormatInfo value() {

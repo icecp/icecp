@@ -18,19 +18,18 @@ package com.intel.icecp.core.security.keymanagement.exception;
 import com.intel.icecp.core.security.keymanagement.KeyManager;
 
 /**
- * Exception thrown in case of error in {@link DeapKeyManager} operations
- *
+ * Exception thrown in case of error in {@link KeyManager} operations
  */
 public class KeyManagerException extends Exception {
 
     public KeyManagerException(String message) {
         super(message);
     }
-    
+
     public KeyManagerException(Throwable cause) {
         super(cause);
     }
-    
+
     public KeyManagerException(String message, Throwable cause) {
         super(message, cause);
     }

@@ -33,7 +33,7 @@ import java.io.InputStream;
  * (TODO). Should be thread-safe according to
  * http://wiki.fasterxml.com/JacksonFAQThreadSafety
  *
- * @param <T>
+ * @param <T> the message type
  */
 public class JsonFormat<T extends Message> implements Format<T> {
 
@@ -45,6 +45,7 @@ public class JsonFormat<T extends Message> implements Format<T> {
      * Build a {@link Format} instance that parses JSON into the specified
      * class.  Use this constructor for non-generic types (e.g., String).
      *
+     * @param inputClass the type of message to encode/decode
      */
     public JsonFormat(Class<T> inputClass) {
         this(Token.of(inputClass));
@@ -54,6 +55,7 @@ public class JsonFormat<T extends Message> implements Format<T> {
      * Build a {@link Format} instance that parses JSON into the specified
      * class.  Use this constructor for generic types (e.g. {@literal List<String>}).
      *
+     * @param type the type of message to encode/decode
      */
     public JsonFormat(Token<T> type) {
         this.type = type;
