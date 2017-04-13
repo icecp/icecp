@@ -83,7 +83,7 @@ public class ExampleModule implements Module {
         }
 
         // open up a channel to communicate externally (e.g. other modules, other nodes)
-        try (Channel<BytesMessage> output = node.openChannel(URI.create("icecp:/example/module/output"), BytesMessage.class, Persistence.DEFAULT)) {
+        try (Channel<BytesMessage> output = node.openChannel(URI.create("ndn:/example/module/output"), BytesMessage.class, Persistence.DEFAULT)) {
             assert (!output.isPublishing());
             String x = "";
             for (Map.Entry<String, Object> a : attributes.toMap().entrySet()) {
@@ -96,7 +96,7 @@ public class ExampleModule implements Module {
 
         // perhaps retrieve data remotely; note that if "-Dicecp.sandbox=enabled" then permissions may prevent us from opening certain channels
         try {
-            input = node.openChannel(URI.create("icecp:/example/module/input"), ExampleMessage.class, Persistence.DEFAULT);
+            input = node.openChannel(URI.create("ndn:/example/module/input"), ExampleMessage.class, Persistence.DEFAULT);
             assert (!input.isSubscribing());
             input.subscribe(m -> LOGGER.info("Received m: {}", m)); // this callback will live on past
         } catch (ChannelLifetimeException | ChannelIOException e) {
